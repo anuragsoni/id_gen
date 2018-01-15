@@ -1,20 +1,44 @@
 defmodule IdGen.Util do
-  @doc """
+  @doc ~S"""
   Returns the current time in milliseconds
+
+  ## Examples
+
+      iex> time = IdGen.Util.current_time_millis
+      iex> time > 0
+      true
   """
   @spec current_time_millis() :: integer()
   def current_time_millis() do
-    :os.system_time(:milli_seconds)
+    System.system_time(:millisecond)
   end
 
   @doc """
   Returns the first interface with a valid mac address
   """
-  @spec get_default_interface :: list(charlist())
+  @spec get_default_interface :: charlist()
   def get_default_interface do
-    {:ok, network_interfaces} = :inet.getifaddrs()
+    :inet.getifaddrs()
+    |> elem(1)
+    |> extract_interface
+  end
 
-    network_interfaces
+  @doc ~S"""
+  Returns the first interface from the given list,
+  that has a valid mac address
+
+  ## Examples
+
+      iex> IdGen.Util.extract_interface([])
+      []
+
+      iex> IdGen.Util.extract_interface([{'qe1', [hwaddr: [10, 1, 9, 12, 11, 46]]}])
+      'qe1'
+  """
+  @spec extract_interface(list()) :: charlist()
+  def extract_interface([]), do: []
+  def extract_interface(interfaces) do
+    interfaces
     |> Stream.filter(fn {_, details} -> filter_interface(details) end)
     |> Stream.map(fn {i, _} -> i end)
     |> Enum.take(1)
@@ -36,7 +60,7 @@ defmodule IdGen.Util do
   @doc """
   Return the mac address of given interface as a 48 bit integer
   """
-  @spec get_hardware_interface(charlist()) :: integer()
+  @spec get_hardware_interface(charlist()) :: integer() | {:error, :not_found}
   def get_hardware_interface([]), do: {:error, :not_found}
 
   def get_hardware_interface(name) do
