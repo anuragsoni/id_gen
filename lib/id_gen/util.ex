@@ -37,6 +37,7 @@ defmodule IdGen.Util do
   """
   @spec extract_interface(list()) :: charlist()
   def extract_interface([]), do: []
+
   def extract_interface(interfaces) do
     interfaces
     |> Stream.filter(fn {_, details} -> filter_interface(details) end)
@@ -77,8 +78,31 @@ defmodule IdGen.Util do
     end
   end
 
-  defp hardware_address_to_bytes(hardware_address) do
+  @doc ~S"""
+  Converts mac address to binary
+
+  Examples:
+
+      iex> IdGen.Util.hardware_address_to_bytes([1,2,3,4,5,6])
+      1108152157446
+  """
+  @spec hardware_address_to_bytes(list(integer())) :: non_neg_integer()
+  def hardware_address_to_bytes(hardware_address) do
     <<worker_id::integer-48>> = :erlang.list_to_binary(hardware_address)
     worker_id
+  end
+
+  @doc ~S"""
+  Generates an ID from 64 bit timestamp + 48 bit worker id
+  and 16 bit sequence.
+
+  ## Examples
+
+      iex> IdGen.Util.generate_id(1516071066587, 242618484254530, 12) |> Base.url_encode64
+      "AAABYPzgm9vcqQSR50IADA=="
+  """
+  @spec generate_id(integer(), integer(), integer()) :: binary()
+  def generate_id(timestamp, worker, sequence) do
+    <<timestamp::integer-64, worker::integer-48, sequence::integer-16>>
   end
 end

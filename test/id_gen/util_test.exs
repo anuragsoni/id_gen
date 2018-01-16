@@ -70,4 +70,13 @@ defmodule IdGenTest.Util do
 
     assert IdGen.Util.extract_interface(interfaces) == 'second'
   end
+
+  test "generates an id from given timestamp, worker and sequence" do
+    timestamp = IdGen.Util.current_time_millis()
+    worker = IdGen.Util.hardware_address_to_bytes(1..6 |> Enum.to_list())
+    <<t::integer-64, w::integer-48, s::integer-16>> = IdGen.Util.generate_id(timestamp, worker, 1)
+    assert timestamp == t
+    assert worker == w
+    assert 1 == s
+  end
 end
