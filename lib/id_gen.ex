@@ -1,18 +1,25 @@
 defmodule IdGen do
   @moduledoc """
-  Documentation for IdGen.
+  IdGen generate 128 bit, k-ordered ids
   """
 
-  @doc """
-  Hello world.
+  def generate_id() do
+    IdGen.Server.get_id()
+  end
 
-  ## Examples
+  def generate_id(:url_encoded) do
+    IdGen.Server.get_id(:url_encoded)
+  end
 
-      iex> IdGen.hello
-      :world
+  def generate_id(number) do
+    1..number
+    |> Stream.map(fn _ -> IdGen.Server.get_id() end)
+    |> Enum.to_list()
+  end
 
-  """
-  def hello do
-    :world
+  def generate_id(number, :url_encoded) do
+    1..number
+    |> Stream.map(fn _ -> IdGen.Server.get_id(:url_encoded) end)
+    |> Enum.to_list()
   end
 end

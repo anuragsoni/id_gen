@@ -1,21 +1,12 @@
 # IdGen
 
-**TODO: Add description**
+Generates 128 bit k-ordered ids. Exploring elixir, by translating flake by Boundary
 
-## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `id_gen` to your list of dependencies in `mix.exs`:
-
+Example usage:
 ```elixir
-def deps do
-  [
-    {:id_gen, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/id_gen](https://hexdocs.pm/id_gen).
-
+IdGen.generate_id(5, :url_encoded)
+["AAABYP0ajwncqQSR50IAAA==", "AAABYP0ajxHcqQSR50IAAA==",
+ "AAABYP0ajxHcqQSR50IAAQ==", "AAABYP0ajxHcqQSR50IAAg==",
+ "AAABYP0ajxHcqQSR50IAAw=="]
+ ```
