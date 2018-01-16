@@ -1,6 +1,6 @@
 # IdGen
 
-Generates 128 bit k-ordered ids. Exploring elixir, by translating flake by Boundary
+Generates 128 bit k-ordered ids. Exploring elixir, by translating Boundary's flake id generator
 
 
 Example usage:
