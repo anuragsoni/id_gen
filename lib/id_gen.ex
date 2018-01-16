@@ -12,14 +12,10 @@ defmodule IdGen do
   end
 
   def generate_id(number) do
-    1..number
-    |> Stream.map(fn _ -> IdGen.Server.get_id() end)
-    |> Enum.to_list()
+    for _ <- 1..number, do: IdGen.generate_id()
   end
 
   def generate_id(number, :url_encoded) do
-    1..number
-    |> Stream.map(fn _ -> IdGen.Server.get_id(:url_encoded) end)
-    |> Enum.to_list()
+    for _ <- 1..number, do: IdGen.generate_id(:url_encoded)
   end
 end
